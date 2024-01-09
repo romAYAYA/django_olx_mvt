@@ -1,0 +1,38 @@
+{% extends 'components/base.html' %}
+
+{% block main %}
+Домашняя страница
+
+<div class="bg-success p-2">
+    <div class="container">
+        <form method="POST" action="{% url 'search' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="d-flex w-100">
+                <input name="search" type="text" class="form-control" placeholder="поиск..."/>
+                <button class="btn btn-primary btn-lg w-25" type="submit">🔎</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="bg-warning p-2">
+    <div class="container">
+        <ul>
+            {% for c in categories %}
+            <li><a href="{% url 'items' c.slug %}">{{ c.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="bg-dark p-2">
+    <div class="container">
+        <ul>
+            {% for v in vips %}
+            <li><a href="{% url 'item' v.article.id %}">{{ v.article.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endblock main %}
