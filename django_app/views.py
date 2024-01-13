@@ -57,7 +57,9 @@ def item(request, item_id: str):
     page_objs = Paginator(object_list=_comments, per_page=4)
     page_obj = page_objs.page(number=selected_page)
 
-    return render(request, "ItemDetail.html", context={"item": _item, "page_obj": page_obj})
+    return render(
+        request, "ItemDetail.html", context={"item": _item, "page_obj": page_obj}
+    )
 
 
 def comment(request):
@@ -66,7 +68,7 @@ def comment(request):
         article_id = request.POST.get("article", "")
         _item = models.Item.objects.get(id=int(article_id))
         models.CommentItem.objects.create(author=request.user, article=_item, text=text)
-        return redirect(reverse((item), args=(article_id,)))
+        return redirect(reverse(("item"), args=(article_id,)))
 
 
 def register(request):
@@ -75,20 +77,18 @@ def register(request):
     elif request.method == "POST":
         username = str(request.POST["username"])
         password = str(request.POST["password"])
-
-        if not re.match(
-            r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$',
-            password,
-        ):
-            return render(
-                request,
-                "RegisterPage.html",
-                {"error": "Password does not match the complexity"},
-            )
-
+        # if not re.match(
+        #     r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$',
+        #     password,
+        # ):
+        #     return render(
+        #         request,
+        #         "RegisterPage.html",
+        #         {"error": "Password does not match the complexity"},
+        #     )
         user = User.objects.create(username=username, password=make_password(password))
         login(request, user)
-        return redirect(reverse("items_list"))
+        return redirect(reverse("home"))
 
 
 def login_v(request):
@@ -104,7 +104,7 @@ def login_v(request):
                 request, "LoginPage.html", {"error": "Login or Password don't match"}
             )
         login(request, user)
-        return redirect(reverse("items_list"))
+        return redirect(reverse("home"))
 
 
 def logout_v(request):

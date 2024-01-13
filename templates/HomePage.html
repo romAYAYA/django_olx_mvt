@@ -1,38 +1,65 @@
 {% extends 'components/base.html' %}
 
 {% block main %}
-Домашняя страница
+<div class="p-2">
+    <form method="POST" action="{% url 'search' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="d-flex w-100 input-group">
+            <input name="search" type="text" class="form-control" placeholder="поиск..."/>
+            <button class="btn btn-primary btn-lg w-25" type="submit">🔎</button>
+        </div>
+    </form>
+</div>
 
-<div class="bg-success p-2">
-    <div class="container">
-        <form method="POST" action="{% url 'search' %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="d-flex w-100">
-                <input name="search" type="text" class="form-control" placeholder="поиск..."/>
-                <button class="btn btn-primary btn-lg w-25" type="submit">🔎</button>
+<div class="p-2">
+    <h3>Categories:</h3>
+    <ul>
+        {% for c in categories %}
+        <li><a href="{% url 'items' c.slug %}">{{ c.title }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="p-2">
+    <h3>Suggested:</h3>
+    <div class="row">
+        {% for v in vips %}
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                     xmlns="http://www.w3.org/2000/svg"
+                     role="img" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <title>{{ v.article.title }}</title>
+                    <rect width="100%" height="100%" fill="#55595c"></rect>
+                </svg>
+                <div class="card-body">
+                    <h4>{{ v.article.title }}</h4>
+                    <p class="card-text">{{ v.article.description }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{% url 'item' v.article.id %}">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Details</button>
+                        </a>
+                        <small class="text-body-secondary">{{ v.article.price }} тг.</small>
+                    </div>
+                </div>
             </div>
-        </form>
-    </div>
-</div>
-
-<div class="bg-warning p-2">
-    <div class="container">
-        <ul>
-            {% for c in categories %}
-            <li><a href="{% url 'items' c.slug %}">{{ c.title }}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
-
-<div class="bg-dark p-2">
-    <div class="container">
-        <ul>
-            {% for v in vips %}
-            <li><a href="{% url 'item' v.article.id %}">{{ v.article.title }}</a></li>
-            {% endfor %}
-        </ul>
+        </div>
+        {% endfor %}
     </div>
 </div>
 
 {% endblock main %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
