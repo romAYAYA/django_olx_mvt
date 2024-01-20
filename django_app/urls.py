@@ -11,4 +11,5 @@ urlpatterns = [
     path("register/", views.register, name="register"),
     path("login/", views.login_v, name="login"),
     path("logout/", views.logout_v, name="logout"),
+    path('item/<str:item_id>/rating/<str:is_like>', views.rating, name="rating")
 ]

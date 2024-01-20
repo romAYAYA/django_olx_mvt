@@ -262,3 +262,49 @@ class CommentItem(models.Model):
 
     def __str__(self):
         return f"<CommentItem {self.article.title} ({self.id}) />"
+
+
+class ItemRating(models.Model):
+    author = models.ForeignKey(
+        verbose_name="Author",
+        db_index=True,
+        primary_key=False,
+        editable=True,
+        blank=True,
+        null=False,
+        default="",
+        max_length=100,
+        #
+        to=User,
+        on_delete=models.CASCADE,
+    )
+    item = models.ForeignKey(
+        verbose_name="Item",
+        db_index=True,
+        primary_key=False,
+        editable=True,
+        blank=True,
+        null=False,
+        default="",
+        max_length=100,
+        #
+        to=Item,
+        on_delete=models.CASCADE,
+    )
+    is_like = models.BooleanField(
+        verbose_name="Like or Dislike",
+        db_index=True,
+        primary_key=False,
+        unique=False,
+        editable=True,
+        blank=True,
+        null=False,
+        default=True,
+    )
+
+    class Meta:
+        app_label = "django_app"
+        ordering = ("-item", "-author")
+
+    def __str__(self):
+        return f"<ItemRating {self.item.title} ({self.id}) | {self.is_like} />"

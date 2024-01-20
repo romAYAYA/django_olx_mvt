@@ -1,4 +1,5 @@
 {% extends 'components/base.html' %}
+{% load django_app_filters_and_tags %}
 
 {% block main %}
 
@@ -15,12 +16,16 @@
                 </svg>
                 <div class="card-body">
                     <h4>{{ item.title }}</h4>
-                    <p class="card-text">{{ item.description }}</p>
+                    <p class="card-text">{{ item.description | custom_cut:10 }}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <a href="{% url 'item' item.id %}">
                             <button type="button" class="btn btn-sm btn-outline-secondary">Details</button>
                         </a>
-                        <small class="text-body-secondary">{{ item.price }} тг.</small>
+                        <div>
+                            <p>Comments: {% comment_count item.id %}</p>
+                            <p>Rating: {% item_rating item.id %}</p>
+                        </div>
+                        <small class="text-body-secondary">{{ item.price|digitize_num }} тг.</small>
                     </div>
                 </div>
             </div>

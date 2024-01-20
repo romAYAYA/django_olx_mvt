@@ -19,6 +19,19 @@
                 <div class="col-10 mb-1 small">{{ item.description }} тг.</div>
             </a>
         </div>
+        <div class="display-6">
+            {% if is_user_rating == 1 %}
+            <a href="{% url 'rating' item.id '1' %}"><i class="fa-solid fa-thumbs-up"></i></a>
+            {% else %}
+            <a href="{% url 'rating' item.id '1' %}"><i class="fa-regular fa-thumbs-up"></i></a>
+            {% endif %}
+            <div>{{total_rating}}</div>
+            {% if is_user_rating == -1 %}
+            <a href="{% url 'rating' item.id '-1' %}"><i class="fa-solid fa-thumbs-down"></i></a>
+            {% else %}
+            <a href="{% url 'rating' item.id '-1' %}"><i class="fa-regular fa-thumbs-down"></i></a>
+            {% endif %}
+        </div>
     </div>
 </div>
 
