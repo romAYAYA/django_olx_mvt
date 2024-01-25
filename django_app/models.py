@@ -308,3 +308,107 @@ class ItemRating(models.Model):
 
     def __str__(self):
         return f"<ItemRating {self.item.title} ({self.id}) | {self.is_like} />"
+
+
+class Room(models.Model):
+    name = models.CharField(
+        verbose_name="Name",
+        db_index=True,
+        primary_key=False,
+        unique=False,
+        editable=True,
+        blank=True,
+        null=False,
+        default="",
+        max_length=300,
+    )
+    slug = models.SlugField(
+        verbose_name="URL",
+        db_index=True,
+        primary_key=False,
+        unique=True,
+        editable=True,
+        blank=True,
+        null=False,
+        default="",
+        max_length=300,
+    )
+
+    class Meta:
+        app_label = "django_app"
+        ordering = ("-slug", "-name")
+
+    def __str__(self):
+        return f"<Room {self.name} {self.slug} ({self.id}) />"
+
+
+class Message(models.Model):
+    user = models.ForeignKey(
+        verbose_name="Author",
+        db_index=True,
+        primary_key=False,
+        editable=True,
+        blank=True,
+        null=False,
+        default="",
+        max_length=100,
+        #
+        to=User,
+        on_delete=models.CASCADE,
+    )
+    room = models.ForeignKey(
+        verbose_name="Room",
+        db_index=True,
+        primary_key=False,
+        editable=True,
+        blank=True,
+        null=False,
+        default="",
+        max_length=100,
+        #
+        to=Room,
+        on_delete=models.CASCADE,
+    )
+    content = models.TextField(
+        verbose_name="Message text",
+        db_index=False,
+        primary_key=False,
+        unique=False,
+        editable=True,
+        blank=True,
+        null=False,
+        default="",
+    )
+    date_added = models.DateTimeField(
+        verbose_name="Date and time of creation",
+        db_index=True,
+        primary_key=False,
+        unique=False,
+        editable=True,
+        blank=True,
+        null=False,
+        default=timezone.now,
+        max_length=300,
+    )
+
+    class Meta:
+        app_label = "django_app"
+        ordering = ("-date_added", "-room")
+
+    def __str__(self):
+        return f'<Message {self.room.name} {self.user.username} {self.content[:30]} ({self.id}) />'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

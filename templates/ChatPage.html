@@ -1,0 +1,18 @@
+{% extends 'components/base.html' %}
+
+{% block main %}
+<h1>Hello, {{request.user.username}}</h1>
+<div>
+    <ul>
+        {% for room in rooms %}
+        <li>
+            <a href="{% url 'room' room.slug %}">{{room.name}}</a>
+        </li>
+        {% empty %}
+            <li>Rooms not found</li>
+        {% endfor %}
+    </ul>
+</div>
+
+
+{% endblock main %}

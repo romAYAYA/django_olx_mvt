@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
@@ -155,3 +156,34 @@ def rating(request, item_id: str, is_like: str):
         )
 
     return redirect(reverse("item", args=(item_id,)))
+
+
+def chat(request):
+    _rooms = models.Room.objects.all()
+    return render(request, "ChatPage.html", context={"rooms": _rooms})
+
+
+@login_required
+def room(request, room_slug: str):
+    _room = models.Room.objects.get(slug=room_slug)
+    _messages = models.Message.objects.filter(room=_room)[:30][::-1]
+
+    return render(request, "RoomPage.html", context={"room": _room, "messages": _messages})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
